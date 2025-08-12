@@ -44,7 +44,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ${{ secrets.FTP_SECURE == 'true' && 'ftps' || 'ftp' }}
           port: ${{ secrets.FTP_PORT }}
-          local-dir: dist
+          local-dir: dist/
           server-dir: ${{ secrets.FTP_SERVER_DIR }}
           dangerous-clean-slate: false   # sadece değişen dosyaları gönder
           exclude: |
