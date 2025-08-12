@@ -1,0 +1,55 @@
+name: Deploy to Hostinger (FTP, only changed files)
+
+on:
+  push:
+    branches: [ "main" ]   # main'e push'ta çalışsın
+  workflow_dispatch: {}     # Actions ekranından elle de çalıştırabil
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: site-deploy
+      cancel-in-progress: true  # üst üste push'ta eskisini iptal et
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Create .env.local from secrets
+        run: |
+          cat > .env.local << 'EOF'
+          VITE_EMAILJS_SERVICE_ID=${{ secrets.VITE_EMAILJS_SERVICE_ID }}
+          VITE_EMAILJS_TEMPLATE_ID=${{ secrets.VITE_EMAILJS_TEMPLATE_ID }}
+          VITE_EMAILJS_PUBLIC_KEY=${{ secrets.VITE_EMAILJS_PUBLIC_KEY }}
+          EOF
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build (Vite → dist)
+        run: npm run build
+
+      - name: Deploy via FTP (FTPS explicit on 21)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ${{ secrets.FTP_SECURE == 'true' && 'ftps' || 'ftp' }}
+          port: ${{ secrets.FTP_PORT }}
+          local-dir: dist
+          server-dir: ${{ secrets.FTP_SERVER_DIR }}
+          dangerous-clean-slate: false   # sadece değişen dosyaları gönder
+          exclude: |
+            **/.git*
+            **/.github/**
+            **/node_modules/**
+            **/*.map
+            **/.well-known/**
