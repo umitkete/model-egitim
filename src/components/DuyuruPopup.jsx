@@ -3,11 +3,12 @@ import { useEffect } from "react";
 export default function DuyuruPopup({
   open,
   onClose,
+  onDontShowToday,             // yeni: "Bugün tekrar gösterme" tıklaması
   imageSrc = "/duyuru/duyuru.jpg",
   imageAlt = "Duyuru",
-  linkHref, // opsiyonel: duyuruya tıklayınca bir sayfaya gitsin istiyorsan
+  linkHref,                    // opsiyonel: görsele tıklayınca bir yere gitsin
 }) {
-  // ESC ile kapatma
+  // ESC ile kapat + body scroll kilidi
   useEffect(() => {
     if (!open) return;
     const onKey = (e) => e.key === "Escape" && onClose();
@@ -50,6 +51,24 @@ export default function DuyuruPopup({
         ) : (
           <img src={imageSrc} alt={imageAlt} className="w-full h-auto object-cover" />
         )}
+
+        {/* Alt aksiyon çubuğu */}
+        <div className="flex items-center justify-between gap-3 px-4 py-3 border-t">
+          <button
+            onClick={onDontShowToday}
+            className="text-sm underline underline-offset-4 hover:opacity-80"
+            title="Bugün tekrar gösterme"
+          >
+            Bugün tekrar gösterme
+          </button>
+          <button
+            onClick={onClose}
+            className="px-4 h-10 rounded-xl text-white"
+            style={{ backgroundColor:"#E30613" }}
+          >
+            Kapat
+          </button>
+        </div>
       </div>
     </div>
   );

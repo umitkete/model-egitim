@@ -14,7 +14,7 @@ export default function IletisimSection({
   const [sending, setSending] = useState(false);
   const [msg, setMsg] = useState("");
 
-  // Canlı telefon biçimleme
+  // Telefonu canlı biçimle
   const formatPhone = (v) => {
     let d = v.replace(/\D/g, "");
     if (!d.startsWith("05")) { if (d.startsWith("5")) d = "0" + d; }
@@ -26,22 +26,17 @@ export default function IletisimSection({
     else out.push(d.slice(0,4), d.slice(4,7), d.slice(7,9), d.slice(9,11));
     return out.join(" ");
   };
-
-  const onPhoneInput = (e) => {
-    e.target.value = formatPhone(e.target.value);
-  };
+  const onPhoneInput = (e) => { e.target.value = formatPhone(e.target.value); };
 
   const onSubmit = async (e) => {
     e.preventDefault();
     setMsg("");
-
     const f = formRef.current;
     const ad = f.first_name.value.trim();
     const soyad = f.last_name.value.trim();
     const tel = f.phone.value.trim();
     const mesaj = f.message.value.trim();
 
-    // temel doğrulamalar
     if (!ad || !soyad || !tel || !mesaj) {
       setMsg("Lütfen tüm alanları doldurun.");
       return;
@@ -52,7 +47,6 @@ export default function IletisimSection({
       return;
     }
 
-    // gizli from_name alanını doldur (EmailJS şablonun bu değişkeni bekliyor)
     f.from_name.value = `${ad} ${soyad}`;
 
     try {
@@ -74,66 +68,68 @@ export default function IletisimSection({
   };
 
   return (
-    <section id="iletisim" className="bg-white py-16">
-      <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Sol: Form */}
-        <div className="space-y-6">
-          <h2 className="text-3xl font-bold" style={{ color: RED }}>Bize Ulaşın</h2>
+    // Tüm bölüm KIRMIZI zemin, yazılar varsayılan beyaz
+    <section id="iletisim" className="py-16 text-white" style={{ backgroundColor: RED }}>
+      <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-10">
+        {/* Sol: Form (beyaz kart) */}
+        <div className="rounded-2xl bg-white text-[hsl(var(--foreground))] p-6 shadow-lg">
+          <h2 className="text-3xl font-extrabold mb-6" style={{ color: RED }}>Bize Ulaşın</h2>
 
           <form ref={formRef} onSubmit={onSubmit} className="space-y-4" noValidate>
-            {/* Gizli alan: EmailJS template -> {{from_name}} */}
             <input type="hidden" name="from_name" />
 
             <div>
-              <label className="block text-sm mb-1 font-semibold">Ad</label>
+              <label className="block text-sm mb-1 font-semibold" style={{ color: RED }}>Ad</label>
               <input
                 name="first_name"
                 type="text"
                 placeholder="Adınız"
-                className="w-full h-11 rounded-xl border px-3 outline-none focus:border-black/60 font-semibold"
+                className="w-full h-11 rounded-xl border px-3 outline-none focus:border-black/60 font-semibold bg-white"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm mb-1 font-semibold">Soyad</label>
+              <label className="block text-sm mb-1 font-semibold" style={{ color: RED }}>Soyad</label>
               <input
                 name="last_name"
                 type="text"
                 placeholder="Soyadınız"
-                className="w-full h-11 rounded-xl border px-3 outline-none focus:border-black/60 font-semibold"
+                className="w-full h-11 rounded-xl border px-3 outline-none focus:border-black/60 font-semibold bg-white"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm mb-1 font-semibold">Telefon (05xx xxx xx xx)</label>
+              <label className="block text-sm mb-1 font-semibold" style={{ color: RED }}>
+                Telefon (05xx xxx xx xx)
+              </label>
               <input
                 name="phone"
                 inputMode="tel"
                 pattern="^05\d{2}\s?\d{3}\s?\d{2}\s?\d{2}$"
                 placeholder="0533 555 55 55"
-                className="w-full h-11 rounded-xl border px-3 outline-none focus:border-black/60 font-semibold"
+                className="w-full h-11 rounded-xl border px-3 outline-none focus:border-black/60 font-semibold bg-white"
                 onInput={onPhoneInput}
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm mb-1 font-semibold">Mesaj</label>
+              <label className="block text-sm mb-1 font-semibold" style={{ color: RED }}>Mesaj</label>
               <textarea
                 name="message"
                 rows={5}
                 placeholder="Mesajınızı yazın..."
-                className="w-full rounded-xl border px-3 py-2 outline-none focus:border-black/60"
+                className="w-full rounded-xl border px-3 py-2 outline-none focus:border-black/60 bg-white"
                 required
               />
             </div>
 
             <button
               type="submit"
-              className="w-full h-11 rounded-2xl font-semibold disabled:opacity-50"
-              style={{ backgroundColor: RED, color: "#fff" }}
+              className="w-full h-11 rounded-2xl font-extrabold border transition hover:opacity-90"
+              style={{ backgroundColor: "#fff", color: RED, borderColor: RED, borderWidth: 2 }}
               disabled={sending}
             >
               {sending ? "Gönderiliyor..." : "Gönder"}
@@ -147,28 +143,27 @@ export default function IletisimSection({
           </form>
         </div>
 
-        {/* Sağ: Bilgiler + Instagram + Harita */}
+        {/* Sağ: Bilgiler (beyaz kartlar) */}
         <div className="space-y-5">
-          <div className="rounded-2xl border p-5 text-white" style={{ backgroundColor: RED }}>
-            <h3 className="font-bold text-lg">Telefon</h3>
-            <p>{telDisplay}</p>
+          <div className="rounded-2xl bg-white p-5 shadow-lg">
+            <h3 className="font-extrabold text-lg" style={{ color: RED }}>Telefon</h3>
+            <p className="font-semibold text-black">{telDisplay}</p>
           </div>
 
-          <div className="rounded-2xl border p-5 text-white" style={{ backgroundColor: RED }}>
-            <h3 className="font-bold text-lg">Adres</h3>
-            <p>{address}</p>
+          <div className="rounded-2xl bg-white p-5 shadow-lg">
+            <h3 className="font-extrabold text-lg" style={{ color: RED }}>Adres</h3>
+            <p className="font-semibold text-black">{address}</p>
           </div>
 
-          <div className="rounded-2xl border p-5 text-white flex items-center gap-3" style={{ backgroundColor: RED }}>            
+          <div className="rounded-2xl bg-white p-5 shadow-lg flex items-center gap-3">
             <a href={instagram} target="_blank" rel="noreferrer" aria-label="Instagram">
-              {/* Kendi ikon dosyan: /public/icons/instagram.svg */}
               <img src="/icons/instagram.svg" alt="" className="w-6 h-6" />
             </a>
-            <h3 className="font-bold text-lg">Instagram</h3>
+            <h3 className="font-extrabold text-lg" style={{ color: RED }}>Instagram</h3>
           </div>
 
           {mapSrc && (
-            <div className="rounded-2xl overflow-hidden border">
+            <div className="rounded-2xl overflow-hidden bg-white shadow-lg">
               <iframe
                 src={mapSrc}
                 className="w-full h-64"

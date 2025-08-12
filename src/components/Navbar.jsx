@@ -11,6 +11,7 @@ export default function Navbar({ onExamClick }) {
       <a href="#fasikuller" className="hover:opacity-90 text-base font-medium">Fasiküller</a>
       <a href="#kadro" className="hover:opacity-90 text-base font-medium">Kadromuz</a>
       <a href="#kampus" className="hover:opacity-90 text-base font-medium">Binamız</a>
+      <a href="#etkinlikler">Etkinliklerimiz</a>
       <a href="#iletisim" className="hover:opacity-90 text-base font-medium">İletişim</a>
     </>
   );
