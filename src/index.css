@@ -1,0 +1,35 @@
+html { scroll-behavior: smooth; }
+
+@import "tailwindcss";
+
+/* Logodan çıkarılan palet */
+:root{
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+
+  /* #e2010e çevresi */
+  --primary: 357 86% 44%;
+  --primary-foreground: 0 0% 100%;
+
+  /* varyantlar istersen kullanırız */
+  --primary-dark1: 357 100% 44%;
+  --primary-dark2: 357 100% 40%;
+
+  /* #f29193 çevresi */
+  --accent: 356 86% 76%;
+  --accent-foreground: 222.2 84% 4.9%;
+
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;
+  --border: 214 32% 91%;
+
+  --radius: 1rem;
+}
+
+/* Yardımcı buton sınıfları */
+.btn-primary{
+  @apply bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] rounded-2xl px-4 py-2 hover:opacity-90 transition;
+}
+.btn-outline{
+  @apply border border-[hsl(var(--border))] rounded-2xl px-4 py-2 hover:bg-[hsl(var(--muted))] transition;
+}
