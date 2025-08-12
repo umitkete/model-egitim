@@ -46,7 +46,7 @@ jobs:
           port: ${{ secrets.FTP_PORT }}
           local-dir: dist/
           server-dir: public_html/
-          dangerous-clean-slate: false   # sadece değişen dosyaları gönder
+          dangerous-clean-slate: true   # sadece değişen dosyaları gönder
           exclude: |
             **/.git*
             **/.github/**
