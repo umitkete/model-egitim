@@ -45,7 +45,7 @@ jobs:
           protocol: ${{ secrets.FTP_SECURE == 'true' && 'ftps' || 'ftp' }}
           port: ${{ secrets.FTP_PORT }}
           local-dir: dist/
-          server-dir: ${{ secrets.FTP_SERVER_DIR }}/
+          server-dir: public_html/
           dangerous-clean-slate: false   # sadece değişen dosyaları gönder
           exclude: |
             **/.git*
