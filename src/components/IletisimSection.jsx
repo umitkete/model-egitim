@@ -14,7 +14,6 @@ export default function IletisimSection({
   const [sending, setSending] = useState(false);
   const [msg, setMsg] = useState("");
 
-  // Telefonu canlı biçimle
   const formatPhone = (v) => {
     let d = v.replace(/\D/g, "");
     if (!d.startsWith("05")) { if (d.startsWith("5")) d = "0" + d; }
@@ -68,7 +67,6 @@ export default function IletisimSection({
   };
 
   return (
-    // Tüm bölüm KIRMIZI zemin, yazılar varsayılan beyaz
     <section id="iletisim" className="py-16 text-white" style={{ backgroundColor: RED }}>
       <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-10">
         {/* Sol: Form (beyaz kart) */}
@@ -80,65 +78,38 @@ export default function IletisimSection({
 
             <div>
               <label className="block text-sm mb-1 font-semibold" style={{ color: RED }}>Ad</label>
-              <input
-                name="first_name"
-                type="text"
-                placeholder="Adınız"
-                className="w-full h-11 rounded-xl border px-3 outline-none focus:border-black/60 font-semibold bg-white"
-                required
-              />
+              <input name="first_name" type="text" placeholder="Adınız"
+                     className="w-full h-11 rounded-xl border px-3 outline-none focus:border-black/60 font-semibold bg-white" required />
             </div>
 
             <div>
               <label className="block text-sm mb-1 font-semibold" style={{ color: RED }}>Soyad</label>
-              <input
-                name="last_name"
-                type="text"
-                placeholder="Soyadınız"
-                className="w-full h-11 rounded-xl border px-3 outline-none focus:border-black/60 font-semibold bg-white"
-                required
-              />
+              <input name="last_name" type="text" placeholder="Soyadınız"
+                     className="w-full h-11 rounded-xl border px-3 outline-none focus:border-black/60 font-semibold bg-white" required />
             </div>
 
             <div>
-              <label className="block text-sm mb-1 font-semibold" style={{ color: RED }}>
-                Telefon (05xx xxx xx xx)
-              </label>
-              <input
-                name="phone"
-                inputMode="tel"
-                pattern="^05\d{2}\s?\d{3}\s?\d{2}\s?\d{2}$"
-                placeholder="0533 555 55 55"
-                className="w-full h-11 rounded-xl border px-3 outline-none focus:border-black/60 font-semibold bg-white"
-                onInput={onPhoneInput}
-                required
-              />
+              <label className="block text-sm mb-1 font-semibold" style={{ color: RED }}>Telefon (05xx xxx xx xx)</label>
+              <input name="phone" inputMode="tel" pattern="^05\d{2}\s?\d{3}\s?\d{2}\s?\d{2}$" placeholder="0533 555 55 55"
+                     className="w-full h-11 rounded-xl border px-3 outline-none focus:border-black/60 font-semibold bg-white"
+                     onInput={onPhoneInput} required />
             </div>
 
             <div>
               <label className="block text-sm mb-1 font-semibold" style={{ color: RED }}>Mesaj</label>
-              <textarea
-                name="message"
-                rows={5}
-                placeholder="Mesajınızı yazın..."
-                className="w-full rounded-xl border px-3 py-2 outline-none focus:border-black/60 bg-white"
-                required
-              />
+              <textarea name="message" rows={5} placeholder="Mesajınızı yazın..."
+                        className="w-full rounded-xl border px-3 py-2 outline-none focus:border-black/60 bg-white" required />
             </div>
 
-            <button
-              type="submit"
-              className="w-full h-11 rounded-2xl font-extrabold border transition hover:opacity-90"
-              style={{ backgroundColor: "#fff", color: RED, borderColor: RED, borderWidth: 2 }}
-              disabled={sending}
-            >
+            <button type="submit"
+                    className="w-full h-11 rounded-2xl font-extrabold border transition hover:opacity-90"
+                    style={{ backgroundColor: "#fff", color: RED, borderColor: RED, borderWidth: 2 }}
+                    disabled={sending}>
               {sending ? "Gönderiliyor..." : "Gönder"}
             </button>
 
             {msg && (
-              <p className={`text-sm ${msg.includes("başarı") ? "text-green-600" : "text-red-600"}`}>
-                {msg}
-              </p>
+              <p className={`text-sm ${msg.includes("başarı") ? "text-green-600" : "text-red-600"}`}>{msg}</p>
             )}
           </form>
         </div>
@@ -157,22 +128,21 @@ export default function IletisimSection({
 
           <div className="rounded-2xl bg-white p-5 shadow-lg flex items-center gap-3">
             <a href={instagram} target="_blank" rel="noreferrer" aria-label="Instagram">
-              <img src="/icons/instagram.svg" alt="" className="w-6 h-6" />
+              {/* Inline Instagram SVG — dosyasız */}
+              <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"
+                   style={{ fill: "none", stroke: RED, strokeWidth: 1.5 }}>
+                <rect x="3" y="3" width="18" height="18" rx="5" />
+                <circle cx="12" cy="12" r="4.2" />
+                <circle cx="17.3" cy="6.7" r="1.2" fill={RED} stroke="none" />
+              </svg>
             </a>
             <h3 className="font-extrabold text-lg" style={{ color: RED }}>Instagram</h3>
           </div>
 
           {mapSrc && (
             <div className="rounded-2xl overflow-hidden bg-white shadow-lg">
-              <iframe
-                src={mapSrc}
-                className="w-full h-64"
-                style={{ border: 0 }}
-                loading="lazy"
-                allowFullScreen
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Harita"
-              />
+              <iframe src={mapSrc} className="w-full h-64" style={{ border: 0 }} loading="lazy"
+                      allowFullScreen referrerPolicy="no-referrer-when-downgrade" title="Harita" />
             </div>
           )}
         </div>

@@ -1,7 +1,10 @@
+// src/components/GraduatesGridCarousel.jsx
 import { useEffect, useMemo, useRef, useState } from "react";
 
 export default function GraduatesGridCarousel({ data = [] }) {
-  const pageSize = 25;
+  // 4x5 = 20 kişi/ekran
+  const pageSize = 20;
+
   const pages = useMemo(() => {
     const arr = [];
     for (let i = 0; i < data.length; i += pageSize) arr.push(data.slice(i, i + pageSize));
@@ -12,6 +15,7 @@ export default function GraduatesGridCarousel({ data = [] }) {
   const [paused, setPaused] = useState(false);
   const resumeTimer = useRef(null);
 
+  // 3 sn’de bir otomatik geçiş (kullanıcı etkileşimi yoksa)
   useEffect(() => {
     const t = setInterval(() => {
       if (!paused) setIdx((p) => (p + 1) % pages.length);
@@ -31,7 +35,7 @@ export default function GraduatesGridCarousel({ data = [] }) {
     <section
       id="mezunlar"
       className="py-10"
-      style={{ backgroundColor: "#E30613" }}  /* bölüm arka planı logo kırmızısı */
+      style={{ backgroundColor: "#E30613" }} // logo kırmızısı
       onMouseMove={userInteracted}
       onKeyDown={userInteracted}
       onTouchStart={userInteracted}
@@ -55,9 +59,12 @@ export default function GraduatesGridCarousel({ data = [] }) {
           </div>
         </div>
 
-        {/* Kartları kırmızı zemin üzerinde sınır + şeffaf arkaplanla gösteriyoruz */}
-        <div role="list" aria-label="Mezun listesi"
-             className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+        {/* 4 sütun (lg ve üzeri). Küçük ekranlarda akıllı kırılım */}
+        <div
+          role="list"
+          aria-label="Mezun listesi"
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-3"
+        >
           {page.map((s, i) => (
             <article
               key={i}
@@ -65,12 +72,15 @@ export default function GraduatesGridCarousel({ data = [] }) {
               className="rounded-xl border border-white/30 bg-white/5 p-3 hover:bg-white/10 transition"
               title={`${s.ad} ${s.soyad} — ${s.bolum}`}
             >
-              <div className="font-semibold truncate text-white">{s.ad} {s.soyad}</div>
+              <div className="font-semibold truncate text-white">
+                {s.ad} {s.soyad}
+              </div>
               <div className="text-sm truncate text-white/80">{s.bolum}</div>
             </article>
           ))}
-          {/* 25’ten azsa boş kartlarla hizayı koru */}
-          {Array.from({ length: Math.max(0, 25 - page.length) }).map((_, i) => (
+
+          {/* 20’den azsa boş kartlarla hizayı koru (4x5 görünümü sabit kalsın) */}
+          {Array.from({ length: Math.max(0, 20 - page.length) }).map((_, i) => (
             <div key={`empty-${i}`} className="rounded-xl border border-white/20 bg-white/5 p-3 opacity-50" />
           ))}
         </div>
@@ -78,3 +88,4 @@ export default function GraduatesGridCarousel({ data = [] }) {
     </section>
   );
 }
+
